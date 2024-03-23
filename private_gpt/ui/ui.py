@@ -20,6 +20,7 @@ from private_gpt.open_ai.extensions.context_filter import ContextFilter
 from private_gpt.server.chat.chat_service import ChatService, CompletionGen
 from private_gpt.server.chunks.chunks_service import Chunk, ChunksService
 from private_gpt.server.ingest.ingest_service import IngestService
+from private_gpt.server.utils.auth import ui_authenticated
 from private_gpt.settings.settings import settings
 from private_gpt.ui.images import logo_svg
 
@@ -444,7 +445,7 @@ class PrivateGptUi:
         blocks = self.get_ui_blocks()
         blocks.queue()
         logger.info("Mounting the gradio UI, at path=%s", path)
-        gr.mount_gradio_app(app, blocks, path=path)
+        gr.mount_gradio_app(app, blocks, path=path, auth=ui_authenticated)
 
 
 if __name__ == "__main__":
