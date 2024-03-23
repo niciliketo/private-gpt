@@ -10,11 +10,11 @@ server:
     allow_methods: ["*"]
     allow_headers: ["*"]
   auth:
-    enabled: false
+    enabled: ${AUTH_ENABLED:false}
     # python -c 'import base64; print("Basic " + base64.b64encode("secret:key".encode()).decode())'
     # 'secret' is the username and 'key' is the password for basic auth by default
     # If the auth is enabled, this value must be set in the "Authorization" header of the request.
-    secret: "Basic c2VjcmV0OmtleQ=="
+    secret: ${AUTH_SECRET:Basic c2VjcmV0OmtleQ==}
 
 data:
   local_data_folder: local_data/private_gpt
