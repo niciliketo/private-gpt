@@ -18,6 +18,7 @@ Authorization can be done by following fastapi's guides:
 # We are changing the implementation of the authenticated method, based on
 # the config. If the auth is not enabled, we are not defining the complex method
 # with its dependencies.
+import base64
 import logging
 import secrets
 from typing import Annotated
@@ -39,6 +40,9 @@ logger = logging.getLogger(__name__)
 
 def _simple_authentication(authorization: Annotated[str, Header()] = "") -> bool:
     """Check if the request is authenticated."""
+    logger.info("Checking if the request is authenticated")
+    logger.info(authorization)
+    logger.info(settings().server.auth.secret)
     if not secrets.compare_digest(authorization, settings().server.auth.secret):
         # If the "Authorization" header is not the expected one, raise an exception.
         raise NOT_AUTHENTICATED
@@ -56,7 +60,7 @@ if not settings().server.auth.enabled:
         return True
 
 else:
-    logger.info("Defining the given authentication mechanism for the API")
+    logger.info("Defining the given authentication mechanism")
 
     # Method to be used as a dependency to check if the request is authenticated.
     def authenticated(
@@ -67,3 +71,23 @@ else:
         if not _simple_authentication:
             raise NOT_AUTHENTICATED
         return True
+
+
+# Method to be used as function in the UI to check if the request is authenticated.
+def ui_authenticated(
+    username, password: Annotated[bool, Depends(_simple_authentication)]
+) -> bool:
+    """Check if the request is authenticated."""
+    logger.info("Checking if we authenticate the user")
+    logger.info(settings().server.auth.enabled)
+    if not settings().server.auth.enabled:
+        return True
+    else:
+        logger.info("Checking if the request is authenticated" + username + password)
+        authorization = (
+            "Basic " + base64.b64encode((username + ":" + password).encode()).decode()
+        )
+        if not _simple_authentication(authorization):
+            raise NOT_AUTHENTICATED
+        return True
+    end

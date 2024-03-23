@@ -8,12 +8,15 @@ services:
       - 8001:8001
     environment:
       PORT: 8001
-      PGPT_PROFILES: docker
-      PGPT_MODE: ollama
-      PGPT_EMBED_MODE: ollama
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - 11434:11434
-    volumes:
-      - ./models:/root/.ollama
+      PGPT_PROFILES: docker #,openai
+      PGPT_MODE: gemini
+      PGPT_EMBED_MODE: gemini
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      AUTH_ENABLED: False                                                                                   │
+      AUTH_SECRET: "Basic bWFya2V0ZG9qbzp1bml2ZXJzaXR5MDMz"
+  #ollama:
+  #  image: ollama/ollama:latest
+  #  ports:
+  #    - 11434:11434
+  #  volumes:
+  #    - ./models:/root/.ollama
