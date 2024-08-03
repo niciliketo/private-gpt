@@ -12,7 +12,7 @@ services:
       PGPT_MODE: gemini
       PGPT_EMBED_MODE: gemini
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
-      AUTH_ENABLED: False                                                                                   │
+      AUTH_ENABLED: false
       AUTH_SECRET: "Basic bWFya2V0ZG9qbzp1bml2ZXJzaXR5MDMz"
   #ollama:
   #  image: ollama/ollama:latest

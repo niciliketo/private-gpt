@@ -575,9 +575,20 @@ class PrivateGptUi:
         blocks = self.get_ui_blocks()
         blocks.queue()
         logger.info("Mounting the gradio UI, at path=%s", path)
-        gr.mount_gradio_app(app, blocks, path=path, favicon_path=AVATAR_BOT, auth=ui_authenticated)
 
+        # Initialize the common parameters to create the UI
+        params = {
+            'path': path,
+            'favicon_path': AVATAR_BOT
+        }
 
+        # Conditionally add the auth parameter depending on whether auth is enabled
+        if settings().server.auth.enabled:
+            params['auth'] = ui_authenticated
+
+        # Call the function with the constructed parameters
+        gr.mount_gradio_app(app, blocks, **params)           
+        
 if __name__ == "__main__":
     ui = global_injector.get(PrivateGptUi)
     _blocks = ui.get_ui_blocks()
