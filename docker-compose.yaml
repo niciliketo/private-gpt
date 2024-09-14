@@ -3,15 +3,18 @@ services:
     build:
       dockerfile: Dockerfile.external
     volumes:
-      - ./local_data/:/home/worker/app/local_data
+      - ./local_data/:/home/worker/app/local_data_openapi
     ports:
       - 8001:8001
     environment:
       PORT: 8001
       PGPT_PROFILES: docker #,openai
-      PGPT_MODE: gemini
-      PGPT_EMBED_MODE: gemini
+      #PGPT_MODE: gemini
+      PGPT_MODE: openai
+     # PGPT_EMBED_MODE: gemini
+      PGPT_EMBED_MODE: openai
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
       AUTH_ENABLED: false
       AUTH_SECRET: "Basic bWFya2V0ZG9qbzp1bml2ZXJzaXR5MDMz"
   #ollama:
